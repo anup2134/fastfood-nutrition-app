@@ -49,7 +49,7 @@ export const createItem = catchAsyncErrors(async (req, res, next) => {
 
 export const getItem = catchAsyncErrors(async (req, res, next) => {
   // const name = req.body;
-  const data = await Item.findOne({ name: req.body.name });
+  const data = await Item.findById(req.params.id);
 
   if (data === null) {
     // return next(new ErrorHandler(`No item named ${req.body.name} found`));
@@ -68,14 +68,13 @@ export const getItem = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const searchItem = catchAsyncErrors(async (req, res, next) => {
-  if (!req.body.query) {
+  if (!req.params.query) {
     return next();
   }
-
   const data = await Item.find({
-    $text: { $search: req.body.query, $caseSensitive: false },
+    $text: { $search: req.params.query, $caseSensitive: false },
   })
-    .select({ score: { $meta: "textScore" }, _id: 0 })
+    .select({ score: { $meta: "textScore" } })
     .sort({ score: { $meta: "textScore" } })
     .limit(10);
 

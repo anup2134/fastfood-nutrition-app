@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 
 router.post("/insert", createItem);
-router.get("/getItem", getItem);
-router.post("/searchItem", searchItem);
+router.get("/getItem/:id", getItem);
+router.get("/searchItem/:query", searchItem);
 
 export default router;
