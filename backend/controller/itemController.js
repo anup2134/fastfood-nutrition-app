@@ -75,12 +75,78 @@ export const searchItem = catchAsyncErrors(async (req, res, next) => {
     $text: { $search: req.params.query, $caseSensitive: false },
   })
     .select({ score: { $meta: "textScore" } })
-    .sort({ score: { $meta: "textScore" } })
-    .limit(10);
+    .sort({ score: { $meta: "textScore" } });
 
   res.status(200).json({
     success: true,
     message: "Items retrieved successfully",
     data,
   });
+});
+
+export const getBurgers = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const burgers = await Item.find({
+      category: { $in: ["Burgers", "Wraps", "Gourmet", "Breakfast"] },
+    });
+
+    res.status(200).json({
+      success: true,
+      burgers,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+export const getSides = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const sides = await Item.find({ category: "Sides" });
+    res.status(200).json({
+      success: true,
+      sides,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+export const getBeverages = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const beverages = await Item.find({ category: "Beverages" });
+    res.status(200).json({
+      success: true,
+      beverages,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+export const getDesserts = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const desserts = await Item.find({ category: "Desserts" });
+    res.status(200).json({
+      success: true,
+      desserts,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
 });
